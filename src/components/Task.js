@@ -1,10 +1,14 @@
-const Task = ({ id, title, description, completed }) => {
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import "../styles/Task.css";
+
+const Task = ({ id, title, completed, deleteTask, completedTask }) => {
     return (
-        <div className="task">
-            <h1>{id}</h1>
+        <div className={completed ? "task completed" : "task"}>
+            <h1 onClick={() => completedTask(id)}>{id}</h1>
             <h2>{title}</h2>
-            <p>{description}</p>
-            <p>{completed}</p>
+            <div onClick={() => deleteTask(id)}>
+                <AiOutlineCloseCircle className="icon-delete" />
+            </div>
         </div>
     );
 };
