@@ -30,7 +30,7 @@ const TaskList = () => {
 
     return (
         <div>
-            <TaskForm envioDeLaTarea={addTask} />
+            <TaskForm saveTask={addTask} />
             <div className="taskContainer">
                 {tasks.map((task) => {
                     console.log("Task", task);

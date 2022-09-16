@@ -24,7 +24,7 @@ const TaskForm = ({ envioDeLaTarea }) => {
             title: input,
             completed: false,
         };
-        envioDeLaTarea(newTask); // INSERTE UN NOMBRE ACORDE PARA ESTA PROP POR FAVOR
+        saveTask(newTask); // INSERTE UN NOMBRE ACORDE PARA ESTA PROP POR FAVOR
         e.target.reset();
     };
     return (
