@@ -3,33 +3,46 @@ import TaskForm from "./TaskForm";
 import Task from "./Task";
 
 const TaskList = () => {
-    const [tasks, setTasks] = useState([
-        {
-            id: 1,
-            title: "Tarea 1",
-            description: "Descripción de la tarea 1",
-            completed: false,
-        },
-        {
-            id: 2,
-            title: "Tarea 2",
-            description: "Descripción de la tarea 2",
-            completed: false,
-        },
-    ]);
+    const [tasks, setTasks] = useState([]);
+
+    const addTask = (task) => {
+        if (task.title.trim()) {
+            task.title = task.title.trim();
+            const updatedTasks = [task, ...tasks];
+            setTasks(updatedTasks);
+        }
+    };
+
+    const deleteTask = (id) => {
+        const updatedTasks = tasks.filter((task) => task.id !== id);
+        setTasks(updatedTasks);
+    };
+
+    const completedTask = (id) => {
+        const updatedTasks = tasks.map((task) => {
+            if (task.id === id) {
+                task.completed = !task.completed;
+            }
+            return task;
+        });
+        setTasks(updatedTasks);
+    };
 
     return (
         <div>
-            <TaskForm />
+            <TaskForm envioDeLaTarea={addTask} />
             <div className="taskContainer">
                 {tasks.map((task) => {
+                    console.log("Task", task);
                     return (
                         <Task
                             key={task.id}
                             id={task.id}
                             title={task.title}
-                            description={task.description}
+                            // description={task.description}
                             completed={task.completed}
+                            deleteTask={deleteTask}
+                            completedTask={completedTask}
                         />
                     );
                 })}

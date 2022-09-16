@@ -1,0 +1,11 @@
+.icon-delete {
+    font-size: 50px;
+}
+.task {
+    background-color: aquamarine;
+    color: blue;
+}
+
+.completed {
+    text-decoration: line-through;
+}
