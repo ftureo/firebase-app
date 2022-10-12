@@ -27,6 +27,27 @@ const Products = () => {
 
     console.log("products", products);
 
+    const deleteProduct = async (id) => {
+        const productToDelete = doc(db, "products", id);
+        try {
+            await deleteDoc(productToDelete);
+            MySwal.fire({
+                title: "Deleted!",
+                text: "Your product has been deleted.",
+                icon: "success",
+                confirmButtonText: "Ok",
+            });
+        } catch (error) {
+            MySwal.fire({
+                title: "Error!",
+                text: "Your product has not been deleted.",
+                icon: "error",
+                confirmButtonText: "Ok",
+            });
+        }
+        getProducts();
+    };
+
     useEffect(() => {
         getProducts();
     }, []);
@@ -34,12 +55,21 @@ const Products = () => {
     return (
         <div>
             <h1>Products</h1>
+            <Link to="/create">
+                <Button>Create Product</Button>
+            </Link>
             {products.map((product) => {
                 return (
                     <div key={product.id}>
                         <h2>{product.title}</h2>
                         <p>{product.description}</p>
                         <p>{product.id}</p>
+                        <Button onClick={() => deleteProduct(product.id)}>
+                            Delete product
+                        </Button>
+                        <Link to="/update">
+                            <Button>Update Product</Button>
+                        </Link>
                     </div>
                 );
             })}
