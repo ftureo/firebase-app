@@ -1,8 +1,9 @@
 const UpdateProduct = () => {
     return (
         <div>
-            <h1>UpdateProduct</h1>
+            <h1>Update Product</h1>
         </div>
     );
 };
+
 export default UpdateProduct;

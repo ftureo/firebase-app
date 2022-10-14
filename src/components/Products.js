@@ -19,7 +19,7 @@ const Products = () => {
     const getProducts = async () => {
         const dataProducts = await getDocs(productsCollection);
         // console.log("dataProducts", dataProducts);
-        // console.log("dataProducts.docs", dataProducts.docs);
+        console.log("dataProducts.docs", dataProducts.docs);
         setProducts(
             dataProducts.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         );
@@ -27,16 +27,34 @@ const Products = () => {
 
     console.log("products", products);
 
+    const confirmDeleteProduct = (id) => {
+        console.log("id", id);
+        MySwal.fire({
+            title: "Are you sure to delete this product?",
+            text: "This action don't have reverse!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            console.log("result", result);
+            if (result.isConfirmed) {
+                deleteProduct(id);
+                MySwal.fire({
+                    title: "Deleted!",
+                    text: "Your product has been deleted.",
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                });
+            }
+        });
+    };
+
     const deleteProduct = async (id) => {
         const productToDelete = doc(db, "products", id);
         try {
             await deleteDoc(productToDelete);
-            MySwal.fire({
-                title: "Deleted!",
-                text: "Your product has been deleted.",
-                icon: "success",
-                confirmButtonText: "Ok",
-            });
         } catch (error) {
             MySwal.fire({
                 title: "Error!",
@@ -50,13 +68,14 @@ const Products = () => {
 
     useEffect(() => {
         getProducts();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <div>
             <h1>Products</h1>
             <Link to="/create">
-                <Button>Create Product</Button>
+                <Button variant="success">Create Product</Button>
             </Link>
             {products.map((product) => {
                 return (
@@ -64,10 +83,13 @@ const Products = () => {
                         <h2>{product.title}</h2>
                         <p>{product.description}</p>
                         <p>{product.id}</p>
-                        <Button onClick={() => deleteProduct(product.id)}>
+                        <Button
+                            onClick={() => confirmDeleteProduct(product.id)}
+                            variant="danger"
+                        >
                             Delete product
                         </Button>
-                        <Link to="/update">
+                        <Link to={`/update/`}>
                             <Button>Update Product</Button>
                         </Link>
                     </div>
