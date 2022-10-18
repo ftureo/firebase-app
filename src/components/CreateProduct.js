@@ -9,13 +9,20 @@ import { collection, addDoc } from "firebase/firestore";
 const MySwal = withReactContent(Swal);
 
 const CreateProduct = () => {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [stock, setStock] = useState(0);
+    const [product, setProduct] = useState({
+        title: "",
+        description: "",
+        stock: 0,
+    });
+    console.log("product", product);
 
-    console.log("title", title);
-    console.log("description", description);
-    console.log("stock", stock);
+    // Sin Refactorizar
+    // const [title, setTitle] = useState("");
+    // const [description, setDescription] = useState("");
+    // const [stock, setStock] = useState(0);
+    // console.log("title", title);
+    // console.log("description", description);
+    // console.log("stock", stock);
 
     const navigate = useNavigate();
 
@@ -24,17 +31,19 @@ const CreateProduct = () => {
     const addProduct = async (e) => {
         e.preventDefault();
         try {
-            await addDoc(productCollection, {
-                // Notación anterior a ES6
-                // title: title,
-                // description: description,
-                // stock: stock,
-                // Con notación de ECMASCRIPT 6 podemos simplificarlo cuando el nombre de la key tiene el mismo nombre que la variable
-                title,
-                description,
-                stock,
-                // Le asigna un ID al producto automáticamente
-            });
+            await addDoc(productCollection, product);
+
+            // await addDoc(productCollection, {
+            //     // Notación anterior a ES6
+            //     // title: title,
+            //     // description: description,
+            //     // stock: stock,
+            //     // Con notación de ECMASCRIPT 6 podemos simplificarlo cuando el nombre de la key tiene el mismo nombre que la variable
+            //     title,
+            //     description,
+            //     stock,
+            //     // Le asigna un ID al producto automáticamente
+            // });
             MySwal.fire({
                 title: "Created!",
                 text: "Your product has been created successfully.",
@@ -53,6 +62,15 @@ const CreateProduct = () => {
         }
     };
 
+    const handleChange = (e) => {
+        console.log(e.target.value, e.target.name);
+
+        setProduct({
+            ...product,
+            [e.target.name]: e.target.value,
+        });
+    };
+
     return (
         <div>
             <h1>Create Product</h1>
@@ -61,22 +79,25 @@ const CreateProduct = () => {
                     type="text"
                     name="title"
                     placeholder="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={product.title}
+                    // onChange={(e) => setTitle(e.target.value)} // Plausible de refactorizar
+                    onChange={handleChange}
                 />
                 <input
                     type="text"
                     name="description"
                     placeholder="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    value={product.description}
+                    // onChange={(e) => setDescription(e.target.value)}
+                    onChange={handleChange}
                 />
                 <input
                     type="number"
                     name="stock"
                     placeholder="Stock"
-                    value={stock}
-                    onChange={(e) => setStock(e.target.value)}
+                    value={product.stock}
+                    // onChange={(e) => setStock(e.target.value)}
+                    onChange={handleChange}
                 />
 
                 <Button variant="success" type="submit">

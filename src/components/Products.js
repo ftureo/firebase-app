@@ -41,12 +41,6 @@ const Products = () => {
             console.log("result", result);
             if (result.isConfirmed) {
                 deleteProduct(id);
-                MySwal.fire({
-                    title: "Deleted!",
-                    text: "Your product has been deleted.",
-                    icon: "success",
-                    confirmButtonText: "Ok",
-                });
             }
         });
     };
@@ -55,6 +49,12 @@ const Products = () => {
         const productToDelete = doc(db, "products", id);
         try {
             await deleteDoc(productToDelete);
+            MySwal.fire({
+                title: "Deleted!",
+                text: "Your product has been deleted.",
+                icon: "success",
+                confirmButtonText: "Ok",
+            });
         } catch (error) {
             MySwal.fire({
                 title: "Error!",
@@ -89,7 +89,7 @@ const Products = () => {
                         >
                             Delete product
                         </Button>
-                        <Link to={`/update/`}>
+                        <Link to={`/update/${product.id}`}>
                             <Button>Update Product</Button>
                         </Link>
                     </div>
